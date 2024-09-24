@@ -1,16 +1,30 @@
-
 import React from 'react';
-import UsersNumber from './Number_Of_Users';
+import UsersNumber from './UserCount';
+import Collection from './Collection';
 import CalendarComponent from './CalendarComponent'
+import Table from './Table';
+import './Dashboard.css'
+
+
 
 const Dashboard = () => (
-  <div>
-    <h2>Dashboard Page</h2>
-    <p>Content for the Dashboard page.</p>
-    <CalendarComponent/>
-    <UsersNumber/>
-
+  <>
+  <div className="title">Dashboard</div>
+  <div id="Container">
+    <div id="User">
+      <UsersNumber/>
+      <Collection/>
+    </div>
+    <div id="Content">
+      <div id="Table">
+      <Table/>
+      </div>
+      <div id="Calendar">
+        <CalendarComponent/>
+      </div>
+    </div>
   </div>
+  </>
 );
 
 export default Dashboard;

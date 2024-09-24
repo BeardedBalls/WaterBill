@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Import default styling
+import './Calendar.css'
 
 const CalendarComponent = () => {
   const [date, setDate] = useState(new Date());
@@ -12,12 +13,10 @@ const CalendarComponent = () => {
 
   return (
     <div>
-      <h2>My Calendar</h2>
       <Calendar
         onChange={handleDateChange}
         value={date}
       />
-      <p>Selected date: {date.toDateString()}</p>
     </div>
   );
 };

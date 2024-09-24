@@ -1,0 +1,40 @@
+/* Customize the calendar container */
+.react-calendar {
+    background-color: #30a7ec; /* Background color of the calendar */
+    border-radius: 8px; /* Rounded corners */
+    border: 1px solid #ddd; /* Border color */
+  }
+  
+  /* Customize the tile (date cells) */
+  .react-calendar__tile {
+    border-radius: 4px; /* Rounded corners for each tile */
+  }
+  
+  /* Change the background color of tiles when selected */
+  .react-calendar__tile--active {
+    background-color: #007bff; /* Background color of the selected tile */
+    color: #fff; /* Text color of the selected tile */
+  }
+  
+  /* Change the background color of tiles when hovered */
+  .react-calendar__tile--hover {
+    background-color: #e0e0e0; /* Background color of the tile on hover */
+  }
+  
+  /* Customize the color of the current day */
+  .react-calendar__tile--now {
+    background-color: #ff5722; /* Background color for today’s date */
+    color: #fff; /* Text color for today’s date */
+  }
+  
+  /* Customize the weekday names */
+  .react-calendar__month-view__weekdays {
+    background-color: #007bff; /* Background color of the weekday header */
+    color: #fff; /* Text color of the weekday header */
+  }
+  
+  /* Customize the weekday name tiles */
+  .react-calendar__month-view__weekdays__weekday {
+    color: #fff; /* Text color of the weekday names */
+  }
+  
