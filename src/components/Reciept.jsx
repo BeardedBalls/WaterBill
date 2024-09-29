@@ -1,4 +1,4 @@
-// Billing.js
+
 import React from 'react';
 
 const Reciept = () => (

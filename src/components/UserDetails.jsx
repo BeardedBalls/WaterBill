@@ -3,8 +3,8 @@
 function UserDetails() {
   const user = {
     name: 'John Doe',
-    email: 'john@example.com',
-    balance: '$200.00',
+    email: 'sample',
+    balance: '200.00',
   };
 
   return (

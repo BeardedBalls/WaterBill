@@ -3,9 +3,6 @@ import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
 import ClientTable from './clientTable'; 
 
-
-
-
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
@@ -19,6 +16,8 @@ const Client = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Reset loading state
+      setError(''); // Clear previous errors
       try {
         const querySnapshot = await getDocs(collection(firestore, `clients/Clients_${selectedMonth}/Clients`));
         const data = querySnapshot.docs.map(doc => ({
@@ -45,7 +44,6 @@ const Client = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <>
     <div>
       <label htmlFor="month-select">Select Month: </label>
       <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
@@ -54,9 +52,8 @@ const Client = () => {
         ))}
       </select>
 
-      <ClientTable clients={clients} />
+      <ClientTable clients={clients} selectedMonth={selectedMonth} />
     </div>
-    </>
   );
 };
 

@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/aut
 import { useNavigate } from 'react-router-dom';
 import './LogIn.css';
 
-const LoginForm = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +24,13 @@ const LoginForm = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('User:', user);
-      navigate('/admin');
+      if(user.email === 'dwsmpc@gmail.com'){
+        navigate('/admin');
+      }
+      else{
+        navigate('/userapp')
+      }
+      
     } catch (error) {
       setError(error.message);
     }
@@ -51,7 +57,7 @@ const LoginForm = () => {
 
   return (
     <div className="container1">
-      <img src="/public/Logo.png" alt="" />
+      <img src="/Logo.png" alt="" />
       <form onSubmit={handleSubmit} className="form1">
         <h2 className="header1">Login</h2>
         {error && <p className="error">{error}</p>}
@@ -122,4 +128,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;

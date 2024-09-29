@@ -25,11 +25,14 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 22%;
+    max-width: 65vw;
+    width: 300px;
+    height: 65vh;
     background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    visibility: visible;
   }
   
   .header1 {

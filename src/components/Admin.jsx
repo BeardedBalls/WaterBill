@@ -5,7 +5,6 @@ import Dashboard from './Dashboard';
 import Client from './Client';
 import Reciept from './Reciept';
 import Profile from './Profile';
-import Billing from './Billing';
 import './Admin.css'; // Import the CSS file
 
 function Admin() {
@@ -21,7 +20,6 @@ function Admin() {
           <Route path="/client" element={<Client />} />
           <Route path="/reciept" element={<Reciept />} />
           <Route path="/" element={<Dashboard />} /> {/* Default route */}
-          <Route path="/billing" element={<Billing/>} />
         </Routes>
       </div>
     </div>

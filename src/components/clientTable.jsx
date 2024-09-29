@@ -1,50 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import BillingModal from './BillingModal'; // Modal Component to show Billing
 
-const months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
 
-const ClientTable = ({ clients }) => {
+const debounce = (func, delay) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
+
+const ClientTable = ({ clients, selectedMonth }) => {
   const [formData, setFormData] = useState({});
-  const [selectedMonth, setSelectedMonth] = useState(months[new Date().getMonth()]); // Default to current month
-  const navigate = useNavigate();
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    const saveClients = async () => {
-      try {
-        console.log('Saving clients for month:', selectedMonth);
-        const monthPath = `Clients_${selectedMonth}`; // Build the path for the current month
-        for (const client of clients) {
-          const clientRef = doc(firestore, `clients/${monthPath}/Clients`, client.id); // Update path
-          console.log('Saving client:', clientRef.id);
-          await setDoc(clientRef, {
-            meterNumber: client.meterNumber,
-            lastName: client.lastName,
-            firstName: client.firstName,
-            previousReading: client.previousReading,
-            latestReading: client.latestReading,
-            cubic: client.cubic,
-            amount: client.amount,
-            arrears: client.arrears
-          }, { merge: true }); // Use merge to update existing documents
-        }
-        console.log('Clients saved successfully');
-      } catch (error) {
-        console.error('Error saving clients:', error);
-        setError('Failed to save clients');
-      }
-    };
-    
-
-    if (clients.length > 0) {
-      saveClients();
-    }
-  }, [clients, selectedMonth]);
+  const [selectedClient, setSelectedClient] = useState(null); // Track selected client for billing modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // Track modal state
+  const navigate = useNavigate();
 
   const handleInputChange = (clientId, e) => {
     const { name, value } = e.target;
@@ -62,7 +36,7 @@ const ClientTable = ({ clients }) => {
       [name]: value
     };
 
-    const saveClient = async () => {
+    const saveClient = debounce(async () => {
       try {
         const clientRef = doc(firestore, `clients/Clients_${selectedMonth}/Clients`, clientId);
         await updateDoc(clientRef, updatedClient);
@@ -71,20 +45,19 @@ const ClientTable = ({ clients }) => {
         console.error('Error updating client:', error);
         setError('Failed to update client');
       }
-    };
-    
+    }, 500);
 
     saveClient();
   };
 
-  const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
-    console.log('Selected month changed to:', e.target.value);
+  const handleBillingClick = (client) => {
+    setSelectedClient(client); // Set the selected client for billing
+    setIsModalOpen(true); // Open the modal
   };
 
-  const handleBillingNavigation = () => {
-    navigate('billing'); 
-  }; 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div>
@@ -115,18 +88,24 @@ const ClientTable = ({ clients }) => {
                 <input
                   type="text"
                   name="latestReading"
-                  value={formData[client.id]?.latestReading || client.latestReading || ''}
+                  value={formData[client.id]?.latestReading ?? client.latestReading ?? ''}
                   onChange={(e) => handleInputChange(client.id, e)}
                   placeholder="Enter new reading"
                 />
-                
               </td>
-              <td><button type="button" onClick={handleBillingNavigation}>icon</button></td>
+              <td>
+                <button type="button" onClick={() => handleBillingClick(client)}>icon</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {/* Billing Modal */}
+      {isModalOpen && selectedClient && (
+        <BillingModal client={selectedClient} onClose={closeModal} />
+      )}
     </div>
   );
 };

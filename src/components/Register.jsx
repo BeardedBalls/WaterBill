@@ -8,7 +8,7 @@ import './Register.css'; // Import the CSS file
 const Register = () => {
   const [formData, setFormData] = useState({
     lastName: '',
-    firstName:'',
+    firstName: '',
     address: '',
     phoneNumber: '',
     meterNumber: '',
@@ -33,14 +33,14 @@ const Register = () => {
       setError('Passwords do not match!');
       return;
     }
-
+  
     try {
       // Register user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
-
+  
       // Save additional user data to Firestore
-      await setDoc(doc(firestore, 'users', user.uid), {
+      await setDoc(doc(firestore, 'Users', user.uid), {
         lastName: formData.lastName,
         firstName: formData.firstName,
         address: formData.address,
@@ -48,6 +48,8 @@ const Register = () => {
         meterNumber: formData.meterNumber,
         email: formData.email,
       });
+  
+      // Create a client document for January
       await setDoc(doc(firestore, 'clients/Clients_January/Clients', user.uid), {
         lastName: formData.lastName,
         firstName: formData.firstName,
@@ -56,14 +58,27 @@ const Register = () => {
         meterNumber: formData.meterNumber,
         email: formData.email,
       });
-
-      // Redirect to login page and show success alert
+  
       alert('Registration successful!');
       navigate('/'); // Redirect to login page
     } catch (error) {
-      setError(error.message);
+      console.error(error); // Log the error for debugging
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          setError('Email is already in use!');
+          break;
+        case 'auth/invalid-email':
+          setError('Invalid email format!');
+          break;
+        case 'auth/weak-password':
+          setError('Password should be at least 6 characters!');
+          break;
+        default:
+          setError('Failed to register. Please try again.');
+      }
     }
   };
+  
 
   return (
     <div className="container">
@@ -173,14 +188,12 @@ const Register = () => {
         </div>
         <button type="submit" className="button">Register</button>
         <a
-              href="#"
-              className="forgot-password-link"
-              onClick={(e) => {
-                navigate('/')
-              }}
-            >
-              Back to Login
-            </a>
+          href="#"
+          className="forgot-password-link"
+          onClick={() => navigate('/')}
+        >
+          Back to Login
+        </a>
       </form>
     </div>
   );

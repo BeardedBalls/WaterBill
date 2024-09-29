@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { browserLocalPersistence, setPersistence } from 'firebase/auth';
@@ -21,7 +22,7 @@ const SidePanel = () => {
 
   return (
     <div className="side-panel">
-      <img src="/public/Logo.png" alt="" />
+      <img src="/Logo.png" alt="" />
       <Link to="/admin/profile">
         <br/><button>Profile</button>
       </Link>
