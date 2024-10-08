@@ -57,6 +57,8 @@ const Register = () => {
         phoneNumber: formData.phoneNumber,
         meterNumber: formData.meterNumber,
         email: formData.email,
+        latestReading: 0,
+        previousReading: 0,
       });
   
       alert('Registration successful!');

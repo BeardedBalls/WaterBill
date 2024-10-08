@@ -32,8 +32,8 @@ const SidePanel = () => {
       <Link to="/admin/client">
         <button>Client</button>
       </Link>
-      <Link to="/admin/reciept">
-        <button>Reciept</button>
+      <Link to="/admin/receipt">
+        <button>Receipt</button>
       </Link>
       <button className="logout-button" onClick={handleLogout}>Logout</button>
     </div>

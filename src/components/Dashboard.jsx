@@ -5,8 +5,6 @@ import CalendarComponent from './CalendarComponent'
 import Table from './Table';
 import './Dashboard.css'
 
-
-
 const Dashboard = () => (
   <>
   <div className="title">Dashboard</div>

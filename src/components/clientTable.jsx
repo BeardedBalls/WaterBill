@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
-import { useNavigate } from 'react-router-dom';
-import BillingModal from './BillingModal'; // Modal Component to show Billing
-
+import BillingModal from './BillingModal'; // Modal for the billing actions
+import UpdateReadingModal from './UpdateReadingModal'; // Modal for updating reading
+import './clientTable.css';
 
 const debounce = (func, delay) => {
   let timeout;
@@ -14,26 +14,40 @@ const debounce = (func, delay) => {
 };
 
 const ClientTable = ({ clients, selectedMonth }) => {
-  const [formData, setFormData] = useState({});
+  const [selectedClientForReading, setSelectedClientForReading] = useState(null); // Track client for updating reading
+  const [selectedClientForBilling, setSelectedClientForBilling] = useState(null); // Track client for billing modal
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // Track update reading modal state
+  const [isBillingModalOpen, setIsBillingModalOpen] = useState(false); // Track billing modal state
   const [error, setError] = useState('');
-  const [selectedClient, setSelectedClient] = useState(null); // Track selected client for billing modal
-  const [isModalOpen, setIsModalOpen] = useState(false); // Track modal state
-  const navigate = useNavigate();
 
-  const handleInputChange = (clientId, e) => {
-    const { name, value } = e.target;
+  // Open the "Update Reading" modal
+  const handleUpdateReadingClick = (client) => {
+    setSelectedClientForReading(client);
+    setIsUpdateModalOpen(true);
+  };
 
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [clientId]: {
-        ...prevFormData[clientId],
-        [name]: value
-      }
-    }));
+  // Open the "Billing" modal (icon button)
+  const handleBillingClick = (client) => {
+    setSelectedClientForBilling(client);
+    setIsBillingModalOpen(true);
+  };
 
+  // Close the modals
+  const closeUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    setSelectedClientForReading(null);
+  };
+
+  const closeBillingModal = () => {
+    setIsBillingModalOpen(false);
+    setSelectedClientForBilling(null);
+  };
+
+  // Save the updated reading
+  const saveUpdatedReading = (clientId, newLatestReading) => {
     const updatedClient = {
       ...clients.find(client => client.id === clientId),
-      [name]: value
+      latestReading: newLatestReading,
     };
 
     const saveClient = debounce(async () => {
@@ -50,15 +64,6 @@ const ClientTable = ({ clients, selectedMonth }) => {
     saveClient();
   };
 
-  const handleBillingClick = (client) => {
-    setSelectedClient(client); // Set the selected client for billing
-    setIsModalOpen(true); // Open the modal
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div>
       <table>
@@ -72,6 +77,7 @@ const ClientTable = ({ clients, selectedMonth }) => {
             <th>Amount</th>
             <th>Arrears</th>
             <th>Update Reading</th>
+            <th>Other Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -79,32 +85,49 @@ const ClientTable = ({ clients, selectedMonth }) => {
             <tr key={client.id}>
               <td>{client.meterNumber}</td>
               <td>{client.lastName} {client.firstName}</td>
-              <td>{client.previousReading || ''}</td>
-              <td>{client.latestReading || ''}</td>
+              <td>{client.previousReading || '0'}</td>
+              <td>{client.latestReading || '0'}</td>
               <td>{client.cubic || ''}</td>
               <td>{client.amount || ''}</td>
               <td>{client.arrears || ''}</td>
               <td>
-                <input
-                  type="text"
-                  name="latestReading"
-                  value={formData[client.id]?.latestReading ?? client.latestReading ?? ''}
-                  onChange={(e) => handleInputChange(client.id, e)}
-                  placeholder="Enter new reading"
-                />
+                {/* Button to trigger "Update Reading" modal */}
+                <button
+                  type="button"
+                  onClick={() => handleUpdateReadingClick(client)}
+                >
+                  Update
+                </button>
               </td>
               <td>
-                <button type="button" onClick={() => handleBillingClick(client)}>icon</button>
+                {/* Icon button for other billing modal */}
+                <button
+                  id="btn1"
+                  type="button"
+                  onClick={() => handleBillingClick(client)}
+                >
+                  Bill
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
+      {/* Update Reading Modal */}
+      {isUpdateModalOpen && selectedClientForReading && (
+        <UpdateReadingModal
+          client={selectedClientForReading}
+          onClose={closeUpdateModal}
+          onSave={(newLatestReading) => saveUpdatedReading(selectedClientForReading.id, newLatestReading)}
+        />
+      )}
+
       {/* Billing Modal */}
-      {isModalOpen && selectedClient && (
-        <BillingModal client={selectedClient} onClose={closeModal} />
+      {isBillingModalOpen && selectedClientForBilling && (
+        <BillingModal client={selectedClientForBilling} onClose={closeBillingModal} />
       )}
     </div>
   );

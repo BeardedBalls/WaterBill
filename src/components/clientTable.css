@@ -1,0 +1,79 @@
+/* Basic table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    background-color: #f9f9f9;
+  }
+  
+  table th, table td {
+    border: 1px solid #000000;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #4CAF50;
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+  }
+  
+  table td {
+    background-color: #fff;
+    color: black;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Hover effect on table rows */
+  table tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Input field styling */
+  input[type="text"] {
+    width: 100px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Button for billing icon */
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #45a049;
+  }
+  
+  
+  /* Modal styling */
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 90%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
