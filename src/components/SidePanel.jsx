@@ -23,9 +23,6 @@ const SidePanel = () => {
   return (
     <div className="side-panel">
       <img src="/Logo.png" alt="" />
-      <Link to="/admin/profile">
-        <br/><button>Profile</button>
-      </Link>
       <Link to="/admin/dashboard">
         <button>Dashboard</button>
       </Link>

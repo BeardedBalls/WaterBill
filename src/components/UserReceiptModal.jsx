@@ -17,8 +17,7 @@ const UserReceiptModal = ({ user, onClose }) => {
     setSelectedDate(month);
 
     try {
-      // Example Firestore path based on month, e.g., clients/Clients_January/Clients
-      const receiptRef = doc(db, `clients/Clients_${month}/Clients`, user.id); // Assuming user.id is unique for fetching the document
+      const receiptRef = doc(db, `clients/Clients_${month}/Clients`, user.id); 
       const receiptSnap = await getDoc(receiptRef);
 
       if (receiptSnap.exists()) {
@@ -69,7 +68,7 @@ const UserReceiptModal = ({ user, onClose }) => {
             <h2>Receipt for ${user.firstName} ${user.lastName}</h2>
             <p><strong>Previous Reading:</strong> ${previousReading}</p>
             <p><strong>Latest Reading:</strong> ${latestReading}</p>
-            <p><strong>Amount:</strong> $${amount}</p>
+            <p><strong>Amount:</strong> ${amount}</p>
           </div>
         </body>
       </html>
@@ -98,7 +97,7 @@ const UserReceiptModal = ({ user, onClose }) => {
             </div>
             <div>
               <label>Previous Reading:</label>
-              <p>{previousReading || 'N/A'}</p> {/* Display previous reading */}
+              <p>{previousReading || '0'}</p> {/* Display previous reading */}
             </div>
             <div>
               <label>Latest Reading:</label>
@@ -106,7 +105,7 @@ const UserReceiptModal = ({ user, onClose }) => {
             </div>
             <div>
               <label>Amount:</label>
-              <p>${amount || 'N/A'}</p> {/* Display amount */}
+              <p>{amount || 'N/A'}</p> {/* Display amount */}
             </div>
             <button type="button" onClick={handlePrint}>Print Receipt</button>
           </form>

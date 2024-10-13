@@ -1,14 +1,29 @@
-import './UserApp.css';
+import React, { useEffect, useState } from 'react';
 import UserDetails from './UserDetails';
 import PaymentOptions from './PaymentOptions';
 import { useNavigate } from 'react-router-dom';
-import { browserLocalPersistence, setPersistence } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
-import { auth } from './firebaseConfig'; 
-
+import { browserLocalPersistence, setPersistence, signOut } from 'firebase/auth';
+import { auth } from './firebaseConfig';
+import "./UserApp.css";
 
 function UserApp() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setAuthenticated(true);
+      } else {
+        setAuthenticated(false);
+        navigate('/'); // Redirect to login page if not authenticated
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Clean up the subscription
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
@@ -21,16 +36,18 @@ function UserApp() {
     }
   };
 
+  if (loading) return <p>Loading...</p>; // Show loading message while checking auth state
+
   return (
     <div className="dashboard">
       <header>
         <h1>Dashboard</h1>
       </header>
       <div className="user-section">
-        <UserDetails />
+        {authenticated ? <UserDetails /> : <p>User not authenticated.</p>} {/* Conditional rendering */}
       </div>
       <div className="payment-section">
-        <PaymentOptions />
+        <PaymentOptions /> {/* Display Payment Options */}
       </div>
       <button id='logout' onClick={handleLogout}>Logout</button>
     </div>

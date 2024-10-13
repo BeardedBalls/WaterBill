@@ -1,14 +1,13 @@
 import React from 'react';
-import './Collection.css'
+import './Collection.css';
 
-function Collection() {
-
-    return(
-      <div className="lala">
+function Collection({ totalCollection }) {
+  return (
+    <div className="lala">
       <div className="label">Collection</div>
-      <div className="collection">0</div>
-      </div>
-    )
+      <div className="collection">{totalCollection.toLocaleString()}</div> {/* Format number with commas */}
+    </div>
+  );
 }
 
 export default Collection;

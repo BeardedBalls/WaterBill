@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import './UserCount.css'
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import './UserCount.css';
 
 function UserCount() {
   const [userCount, setUserCount] = useState(0);
@@ -9,14 +9,9 @@ function UserCount() {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const countRef = doc(db, 'metadata', 'userCount');
-        const countDoc = await getDoc(countRef);
-
-        if (countDoc.exists()) {
-          setUserCount(countDoc.data().count || 0);
-        } else {
-          setUserCount(0); // Default if the document doesn't exist
-        }
+        const usersCollection = collection(db, 'Users');
+        const usersSnapshot = await getDocs(usersCollection);
+        setUserCount(usersSnapshot.size); // Set user count based on the number of documents
       } catch (error) {
         console.error('Error fetching user count:', error);
       }
@@ -25,12 +20,12 @@ function UserCount() {
     fetchUserCount();
   }, [db]);
 
-    return(
-      <div className="user-count-container">
-      <div className="user-count-label">Total clients</div>
+  return (
+    <div className="user-count-container">
+      <div className="user-count-label">Total Clients</div>
       <div className="user-count-number">{userCount}</div>
-      </div>
-    )
+    </div>
+  );
 }
 
 export default UserCount;

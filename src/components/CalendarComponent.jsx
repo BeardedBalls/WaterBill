@@ -1,22 +1,27 @@
-// CalendarComponent.js
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // Import default styling
-import './Calendar.css'
+import React from 'react';
+import './Calendar.css';
 
-const CalendarComponent = () => {
-  const [date, setDate] = useState(new Date());
+const CalendarComponent = ({ selectedMonth, onMonthChange }) => {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
+  const handleMonthClick = (month) => {
+    onMonthChange(month); // Call the parent function to update the selected month
   };
 
   return (
-    <div>
-      <Calendar
-        onChange={handleDateChange}
-        value={date}
-      />
+    <div className="calendar-grid">
+      {months.map((month, index) => (
+        <div
+          key={index}
+          className={`calendar-month ${selectedMonth === index + 1 ? 'selected' : ''}`}
+          onClick={() => handleMonthClick(index + 1)}
+        >
+          {month}
+        </div>
+      ))}
     </div>
   );
 };

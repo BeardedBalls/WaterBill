@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
-import UserReceiptModal from './UserReceiptModal'; // Import the UserReceiptModal component
+import UserReceiptModal from './UserReceiptModal'; 
+import PaymentModal from './PaymentModal'; 
 import './Receipt.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileInvoice } from '@fortawesome/free-solid-svg-icons'; 
+import { faReceipt } from '@fortawesome/free-solid-svg-icons'; // Add the receipt icon
 
-const Reciept = () => {
+const Payment = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false); 
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -40,17 +45,31 @@ const Reciept = () => {
 
   const handleViewBilling = (user) => {
     setSelectedUser(user);
-    setIsReceiptOpen(true); // Open the receipt modal
+    setIsPaymentModalOpen(true); 
   };
 
   const closeReceipt = () => {
     setIsReceiptOpen(false);
-    setSelectedUser(null); // Clear selected user
+    setSelectedUser(null); 
+  };
+
+  const closePaymentModal = () => {
+    setIsPaymentModalOpen(false);
+    setSelectedUser(null); 
+  };
+
+  const handlePaymentSaved = () => {
+    // If you want to handle anything specific after payment is saved
+  };
+
+  const openReceipt = (user) => {
+    setSelectedUser(user); // Set the selected user for receipt
+    setIsReceiptOpen(true); // Open the receipt modal
   };
 
   return (
     <div className="receipt-container">
-      <h2>Receipt Page</h2>
+      <h2>Payment Page</h2>
 
       <div className="search-bar">
         <input
@@ -69,7 +88,25 @@ const Reciept = () => {
             filteredUsers.map(user => (
               <li key={user.id} className="user-item">
                 <span>{user.firstName} {user.lastName}</span>
-                <button className="view-billing-btn" onClick={() => handleViewBilling(user)}>View Receipt</button>
+                <div className="tooltip-container">
+                  <button
+                    className="view-billing-btn"
+                    onClick={() => handleViewBilling(user)}
+                    aria-label={`View payment for ${user.firstName} ${user.lastName}`}
+                  >
+                    <FontAwesomeIcon icon={faFileInvoice} />
+                    <span className="tooltip">Payment</span> {/* Tooltip for the button */}
+                  </button>
+
+                  <button
+                    className="view-receipt-btn"
+                    onClick={() => openReceipt(user)}
+                    aria-label={`View receipt for ${user.firstName} ${user.lastName}`}
+                  >
+                    <FontAwesomeIcon icon={faReceipt} />
+                    <span className="tooltip">View Receipt</span> {/* Tooltip for the button */}
+                  </button>
+                </div>
               </li>
             ))
           ) : (
@@ -78,12 +115,19 @@ const Reciept = () => {
         </ul>
       )}
 
-      {/* Show receipt modal if a user is selected */}
+      {isPaymentModalOpen && selectedUser && (
+        <PaymentModal 
+          user={selectedUser} 
+          onClose={closePaymentModal} 
+          onPaymentSaved={handlePaymentSaved} 
+        />
+      )}
+
       {isReceiptOpen && selectedUser && (
-        <UserReceiptModal user={selectedUser} onClose={closeReceipt} />
+        <UserReceiptModal user={selectedUser}  onClose={closeReceipt} />
       )}
     </div>
   );
 };
 
-export default Reciept;
+export default Payment;

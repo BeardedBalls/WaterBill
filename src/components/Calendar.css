@@ -1,40 +1,36 @@
-/* Customize the calendar container */
-.react-calendar {
-    background-color: #30a7ec; /* Background color of the calendar */
-    border-radius: 8px; /* Rounded corners */
-    border: 1px solid #ddd; /* Border color */
-  }
-  
-  /* Customize the tile (date cells) */
-  .react-calendar__tile {
-    border-radius: 4px; /* Rounded corners for each tile */
-  }
-  
-  /* Change the background color of tiles when selected */
-  .react-calendar__tile--active {
-    background-color: #007bff; /* Background color of the selected tile */
-    color: #fff; /* Text color of the selected tile */
-  }
-  
-  /* Change the background color of tiles when hovered */
-  .react-calendar__tile--hover {
-    background-color: #e0e0e0; /* Background color of the tile on hover */
-  }
-  
-  /* Customize the color of the current day */
-  .react-calendar__tile--now {
-    background-color: #ff5722; /* Background color for today’s date */
-    color: #fff; /* Text color for today’s date */
-  }
-  
-  /* Customize the weekday names */
-  .react-calendar__month-view__weekdays {
-    background-color: #007bff; /* Background color of the weekday header */
-    color: #fff; /* Text color of the weekday header */
-  }
-  
-  /* Customize the weekday name tiles */
-  .react-calendar__month-view__weekdays__weekday {
-    color: #fff; /* Text color of the weekday names */
-  }
-  
+/* Calendar.css */
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 months per row */
+  gap: 10px; /* Spacing between months */
+  padding: 20px;
+  justify-items: center; /* Center the month names */
+}
+
+.calendar-month {
+  width: 120px; /* Fixed width */
+  height: 120px; /* Fixed height */
+  display: flex; /* Flexbox to center content */
+  justify-content: center; /* Horizontally center the text */
+  align-items: center; /* Vertically center the text */
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 18px;
+  color: black;
+}
+
+.calendar-month:hover {
+  background-color: #007bff;
+  color: rgb(0, 0, 0);
+}
+
+.calendar-month.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}

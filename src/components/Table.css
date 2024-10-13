@@ -29,4 +29,31 @@
   .table td, .table th {
     font-size: 14px; /* Font size for table text */
   }
-  
+  /* Table.css */
+
+.table {
+  max-height: 400px; /* Set a maximum height for the table container */
+  overflow-y: auto; /* Enable vertical scrolling when content overflows */
+  overflow-x: auto; /* Enable horizontal scrolling for wide tables */
+  margin: 20px 0; /* Add margin for spacing */
+  border: 1px solid #ccc; /* Optional: Add a border around the table */
+  border-radius: 8px; /* Optional: Rounded corners */
+}
+
+.table table {
+  width: 100%; /* Ensure the table takes full width of its container */
+  border-collapse: collapse; /* Optional: Collapse borders */
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc; /* Add a bottom border to rows */
+}
+
+.table thead {
+  background-color: #f5f5f5; /* Optional: Add background color for table header */
+  position: sticky;
+  top: 0; /* Make the header sticky when scrolling */
+  z-index: 1;
+}
