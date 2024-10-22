@@ -37,18 +37,17 @@ const ClientTable = ({ clients, selectedMonth, onUpdateReading }) => {
     };
 
     const handleUpdate = (updatedClient) => {
-        // Update the client list with the updated cubic reading, amount, and latest reading
         setSortedClients(prevClients =>
             prevClients.map(client => 
                 client.id === updatedClient.id ? { 
                     ...client, 
                     cubic: updatedClient.cubic, 
-                    amount: updatedClient.amount, // Ensure amount is updated
-                    latestReading: updatedClient.latestReading // Ensure latest reading is updated correctly
+                    amount: updatedClient.amount, 
+                    latestReading: updatedClient.latestReading 
                 } : client
             )
         );
-        onUpdateReading(updatedClient); // Callback to update parent component if needed
+        onUpdateReading(updatedClient); 
     };
 
     return (
@@ -77,12 +76,12 @@ const ClientTable = ({ clients, selectedMonth, onUpdateReading }) => {
                             <td>{client.previousReading || '0'}</td>
                             <td>{client.latestReading || '0'}</td>
                             <td>{client.cubic || ''}</td>
-                            <td>{client.amount || ''}</td> {/* Ensure amount is displayed */}
+                            <td>{client.amount || ''}</td>
                             <td>{client.arrears || ''}</td>
                             <td>
                                 <button
                                     type="button"
-                                    onClick={() => handleUpdateReadingClick(client)} // Trigger Update modal
+                                    onClick={() => handleUpdateReadingClick(client)} 
                                     className="icon-button"
                                 >
                                     <FontAwesomeIcon icon={faEdit} />
@@ -92,7 +91,7 @@ const ClientTable = ({ clients, selectedMonth, onUpdateReading }) => {
                             <td>
                                 <button
                                     type="button"
-                                    onClick={() => handleBillingClick(client)} // Trigger Billing modal
+                                    onClick={() => handleBillingClick(client)} 
                                     className="icon-button"
                                 >
                                     <FontAwesomeIcon icon={faFileInvoice} />
@@ -106,17 +105,15 @@ const ClientTable = ({ clients, selectedMonth, onUpdateReading }) => {
             {isUpdateModalOpen && (
                 <UpdateReadingModal
                     client={selectedClient}
-                    onClose={() => setIsUpdateModalOpen(false)} // Close modal handler
-                    onSave={handleUpdate} // Pass handleUpdate to save changes
-                    selectedMonth={selectedMonth} // Pass the selected month
+                    onClose={() => setIsUpdateModalOpen(false)} 
+                    onSave={handleUpdate} 
+                    selectedMonth={selectedMonth} 
                 />
             )}
-
-            {/* Render BillingModal when open */}
             {isBillingModalOpen && (
                 <BillingModal
                     client={selectedClient}
-                    onClose={() => setIsBillingModalOpen(false)} // Close modal handler
+                    onClose={() => setIsBillingModalOpen(false)} 
                 />
             )}
         </div>

@@ -33,12 +33,14 @@ th, td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  background-color: #79b3f1;
+  background-color: #0A74DA;
+  color: #FFFFFF;
+
 }
 
 th {
-  background-color: #007bff; /* Header background color */
-  color: white; /* Header text color */
+  background-color: #0A74DA; /* Header background color */
+  color: rgb(255, 255, 255);
   cursor: pointer; /* Change cursor for sortable headers */
 }
 
@@ -51,7 +53,7 @@ tr:hover {
   background: none;
   border: none;
   cursor: pointer;
-  color: #007bff; /* Icon color */
+  color: #A4DFFF; /* Icon color */
   position: relative; /* For tooltip positioning */
 }
 

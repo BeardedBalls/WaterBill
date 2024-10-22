@@ -60,7 +60,7 @@ function Table({ selectedMonth, setTotalAmount }) {
           {payments.map(payment => (
             <tr key={payment.id}>
               <td>{payment.name}</td>
-              <td>${payment.amount.toLocaleString()}</td>
+              <td>Php. {payment.amount.toLocaleString()}</td>
               <td>{payment.orNumber || 'N/A'}</td> {/* Default to 'N/A' if OR number doesn't exist */}
             </tr>
           ))}

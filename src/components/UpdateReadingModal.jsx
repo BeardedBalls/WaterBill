@@ -1,66 +1,70 @@
 import React, { useState } from 'react';
 import './UpdateReadingModal.css'; // CSS file for the modal styling
 import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from './firebaseConfig'; // Ensure this path is correct
+import { firestore } from './firebaseConfig';
 
 const UpdateReadingModal = ({ client, onClose, onSave, selectedMonth }) => {
-    const [latestReading, setLatestReading] = useState(client.latestReading || '');
+    const [latestReading, setLatestReading] = useState(client.latestReading || 0);
+    const [cubic, setCubic] = useState(client.cubic || 0);
+    const [amount, setAmount] = useState(client.amount || 0);
+
+    const calculateAmount = (cubic) => {
+        const baseRate = 400;
+        const additionalRate = 0.0447;
+        const amount = cubic <= 10 ? baseRate : baseRate + ((cubic - 10)* additionalRate * baseRate);
+        return parseFloat(amount.toFixed(2)); // Rounding to 2 decimal places
+    };
+    
 
     const handleSave = async () => {
-        const previousReading = Number(client.previousReading) || 0;
-        const latest = Number(latestReading) || 0;
-        const cubic = latest - previousReading;
+        const updatedAmount = calculateAmount(cubic);
+        const updatedClient = { 
+            ...client, 
+            latestReading, 
+            cubic, 
+            amount: updatedAmount 
+        };
 
-        // Calculate amount based on cubic consumption
-        let amount = 0;
-        if (cubic <= 10) {
-            amount = 400; // Fixed amount if cubic is less than or equal to 10
-        } else {
-            amount = 400 + ((cubic - 10) * 12.47); // 12.47 for each cubic above 10
-        }
+        // Save the updated reading and amount in Firestore
+        await updateDoc(doc(firestore, `clients/Clients_${selectedMonth}/Clients`, client.id), {
+            latestReading,
+            cubic,
+            amount: updatedAmount
+        });
 
-        // Use the selected month directly
-        const month = selectedMonth || new Date().toLocaleString('default', { month: 'long' });
-        console.log('Updating reading for month:', month, 'Client ID:', client.id);
-
-        try {
-            const clientRef = doc(firestore, `clients/Clients_${month}/Clients`, client.id);
-            await updateDoc(clientRef, {
-                latestReading: latest,
-                cubic: cubic,
-                amount: amount // Include the computed amount
-            });
-
-            console.log(`Updated client ${client.id}:`, { latest, cubic, amount });
-            onSave({ id: client.id, cubic, amount, latestReading: latest }); // Pass the latest reading as well
-            onClose(); // Close the modal after saving
-        } catch (error) {
-            console.error('Error updating reading:', error);
-            alert('Failed to update reading. Error: ' + error.message);
-        }
+        onSave(updatedClient); // Pass updated client data to parent component
+        onClose(); // Close the modal after saving
     };
 
     return (
         <div className="modal">
             <div className="modal-content">
-                <h2>Update Reading for {client.lastName} {client.firstName}</h2>
-                <div className="modal-field">
-                    <label>Previous Reading:</label>
-                    <span>{client.previousReading}</span>
-                </div>
-                <div className="modal-field">
-                    <label>Latest Reading:</label>
-                    <input
-                        type="text"
-                        value={latestReading}
-                        onChange={(e) => setLatestReading(e.target.value)}
-                        placeholder="Enter latest reading"
-                    />
-                </div>
-                <div className="modal-actions">
-                    <button className="save-btn" onClick={handleSave}>Save</button>
-                    <button className="close-btn" onClick={onClose}>Close</button>
-                </div>
+                <h2>Update Reading for {client.firstName} {client.lastName}</h2>
+                <label>Latest Reading:</label>
+                <input
+                    type="number"
+                    value={latestReading}
+                    onChange={(e) => {
+                        const value = Number(e.target.value);
+                        setLatestReading(value);
+                        setCubic(value - client.previousReading); // Calculate cubic automatically
+                    }}
+                />
+                <label>Cubic:</label>
+                <input
+                    type="number"
+                    value={cubic}
+                    onChange={(e) => setCubic(Number(e.target.value))}
+                    disabled // Cubic is automatically calculated, so it is disabled for manual input
+                />
+                <label>Amount:</label>
+                <input
+                    type="number"
+                    value={amount}
+                    disabled // Amount is automatically calculated
+                />
+                <button onClick={handleSave}>Save</button>
+                <button onClick={onClose}>Close</button>
             </div>
         </div>
     );

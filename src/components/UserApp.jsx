@@ -4,7 +4,7 @@ import PaymentOptions from './PaymentOptions';
 import { useNavigate } from 'react-router-dom';
 import { browserLocalPersistence, setPersistence, signOut } from 'firebase/auth';
 import { auth } from './firebaseConfig';
-import "./UserApp.css";
+import './UserApp.css';
 
 function UserApp() {
   const navigate = useNavigate();
@@ -44,10 +44,10 @@ function UserApp() {
         <h1>Dashboard</h1>
       </header>
       <div className="user-section">
-        {authenticated ? <UserDetails /> : <p>User not authenticated.</p>} {/* Conditional rendering */}
+        {authenticated ? <UserDetails /> : <p>User not authenticated.</p>}
       </div>
       <div className="payment-section">
-        <PaymentOptions /> {/* Display Payment Options */}
+        <PaymentOptions />
       </div>
       <button id='logout' onClick={handleLogout}>Logout</button>
     </div>
