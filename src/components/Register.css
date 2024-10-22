@@ -10,6 +10,7 @@ body {
   max-height: 100vh; 
   width: auto; 
   height: auto;
+  background-color: red;
 }
 
 .container {
