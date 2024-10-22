@@ -11,6 +11,7 @@
   margin: 0 auto; /* Center the dashboard horizontally */
   height: auto; /* Allow the height to adjust naturally */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: auto;
 }
 
 /* Make text inside the dashboard scale better */
