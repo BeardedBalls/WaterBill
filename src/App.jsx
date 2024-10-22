@@ -8,6 +8,7 @@ import './App.css'
 
 function App(){
 return(
+    <div className="app-background">
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -16,6 +17,7 @@ return(
         <Route path="/userapp" element={<UserApp />} />
       </Routes>
     </Router>
+    </div>
 )
 }
 
