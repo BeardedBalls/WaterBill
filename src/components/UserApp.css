@@ -9,9 +9,11 @@
   width: 90vw; /* Use viewport width to make it responsive */
   max-width: 500px; /* Max width for larger screens */
   margin: 0 auto; /* Center the dashboard horizontally */
+  max-height: 80vh; /* Set a max height for the dashboard */
   height: auto; /* Allow the height to adjust naturally */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  overflow: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Make text inside the dashboard scale better */
