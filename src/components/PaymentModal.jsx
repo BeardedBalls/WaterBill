@@ -15,7 +15,7 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
       try {
         const clientsQuery = query(
           collection(firestore, `clients/Clients_${getMonthName(selectedMonth)}/Clients`),
-          where('id', '==', user.id)
+          where('meterNumber', '==', user.meterNumber)
         );
 
         const querySnapshot = await getDocs(clientsQuery);
@@ -39,7 +39,7 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
       try {
         const paymentsQuery = query(
           collection(firestore, 'Payments', `Payment_${getMonthName(selectedMonth)}`, 'Payments'),
-          where('userId', '==', user.id)
+          where('meterNumber', '==', user.meterNumber)
         );
 
         const querySnapshot = await getDocs(paymentsQuery);
