@@ -127,7 +127,7 @@ const Client = () => {
                         <button onClick={toggleModal} style={{
                             marginRight: '10px',
                             backgroundColor: '#f44336',
-                            color: 'white',
+                            color: 'black',
                             padding: '10px 20px',
                             border: 'none',
                             borderRadius: '5px',
