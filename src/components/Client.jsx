@@ -116,10 +116,10 @@ const Client = () => {
   );
 };
 
-// Mocked sendEmail function; replace with actual email service logic
+/* Mocked sendEmail function; replace with actual email service logic
 const sendEmail = async ({ to, subject, message }) => {
   console.log(`Sending email to: ${to}, Subject: ${subject}, Message: ${message}`);
   // Replace this with your email-sending logic, such as Firebase Functions or an email API.
-};
+};*/
 
 export default Client;
