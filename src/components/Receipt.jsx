@@ -5,8 +5,8 @@ import UserReceiptModal from './UserReceiptModal';
 import PaymentModal from './PaymentModal'; 
 import './Receipt.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileInvoice, faReceipt, faPaperPlane } from '@fortawesome/free-solid-svg-icons'; 
-import SendModal from './SendModal';
+import { faFileInvoice } from '@fortawesome/free-solid-svg-icons'; 
+import { faReceipt } from '@fortawesome/free-solid-svg-icons'; // Add the receipt icon
 
 const Payment = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +15,6 @@ const Payment = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false); 
-  const [isSendModalOpen, setIsSendModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,35 +59,16 @@ const Payment = () => {
   };
 
   const handlePaymentSaved = () => {
-    // Handle post-payment actions if necessary
+    // If you want to handle anything specific after payment is saved
   };
 
   const openReceipt = (user) => {
-    setSelectedUser(user);
-    setIsReceiptOpen(true);
-  };
-
-  const openSendModal = () => {
-    setIsSendModalOpen(true);
-  };
-
-  const closeSendModal = () => {
-    setIsSendModalOpen(false);
-  };
-
-  const handleSendAction = (selectedMonth) => {
-    console.log(`Sending data for month: ${selectedMonth}`);
-    closeSendModal();
+    setSelectedUser(user); // Set the selected user for receipt
+    setIsReceiptOpen(true); // Open the receipt modal
   };
 
   return (
     <div className="receipt-container">
-      <div className="top-bar">
-        <button className="send-button" onClick={openSendModal}>
-          <FontAwesomeIcon icon={faPaperPlane} /> SEND
-        </button>
-      </div>
-
       <h2>Payment Page</h2>
 
       <div className="search-bar">
@@ -115,7 +95,7 @@ const Payment = () => {
                     aria-label={`View payment for ${user.firstName} ${user.lastName}`}
                   >
                     <FontAwesomeIcon icon={faFileInvoice} />
-                    <span className="tooltip">Payment</span>
+                    <span className="tooltip">Payment</span> {/* Tooltip for the button */}
                   </button>
 
                   <button
@@ -124,7 +104,7 @@ const Payment = () => {
                     aria-label={`View receipt for ${user.firstName} ${user.lastName}`}
                   >
                     <FontAwesomeIcon icon={faReceipt} />
-                    <span className="tooltip">View Receipt</span>
+                    <span className="tooltip">View Receipt</span> {/* Tooltip for the button */}
                   </button>
                 </div>
               </li>
@@ -145,10 +125,6 @@ const Payment = () => {
 
       {isReceiptOpen && selectedUser && (
         <UserReceiptModal user={selectedUser}  onClose={closeReceipt} />
-      )}
-
-      {isSendModalOpen && (
-        <SendModal onClose={closeSendModal} onSend={handleSendAction} />
       )}
     </div>
   );
