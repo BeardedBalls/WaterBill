@@ -5,8 +5,8 @@ import UserReceiptModal from './UserReceiptModal';
 import PaymentModal from './PaymentModal'; 
 import './Receipt.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileInvoice } from '@fortawesome/free-solid-svg-icons'; 
-import { faReceipt } from '@fortawesome/free-solid-svg-icons'; // Add the receipt icon
+import { faFileInvoice, faReceipt, faPaperPlane } from '@fortawesome/free-solid-svg-icons'; 
+import SendModal from './SendModal'; // Import the new SendModal component
 
 const Payment = () => {
   const [users, setUsers] = useState([]);
@@ -15,6 +15,7 @@ const Payment = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false); 
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false); // State for the Send modal
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -67,6 +68,20 @@ const Payment = () => {
     setIsReceiptOpen(true); // Open the receipt modal
   };
 
+  const openSendModal = () => {
+    setIsSendModalOpen(true); // Open the send modal
+  };
+
+  const closeSendModal = () => {
+    setIsSendModalOpen(false); // Close the send modal
+  };
+
+  const handleSendAction = (selectedMonth) => {
+    console.log(`Sending data for month: ${selectedMonth}`);
+    // Add your send logic here
+    closeSendModal();
+  };
+
   return (
     <div className="receipt-container">
       <h2>Payment Page</h2>
@@ -79,6 +94,10 @@ const Payment = () => {
           onChange={handleSearchChange}
         />
       </div>
+
+      <button className="send-button" onClick={openSendModal}>
+        <FontAwesomeIcon icon={faPaperPlane} /> SEND
+      </button>
 
       {loading ? (
         <p>Loading users...</p>
@@ -125,6 +144,10 @@ const Payment = () => {
 
       {isReceiptOpen && selectedUser && (
         <UserReceiptModal user={selectedUser}  onClose={closeReceipt} />
+      )}
+
+      {isSendModalOpen && (
+        <SendModal onClose={closeSendModal} onSend={handleSendAction} />
       )}
     </div>
   );
