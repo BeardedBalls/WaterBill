@@ -79,7 +79,16 @@ const Client = () => {
 
     return (
         <div>
+            {/* Header Section */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <div>
+                    <label htmlFor="month-select">Select Month: </label>
+                    <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
+                        {months.map(month => (
+                            <option key={month} value={month}>{month}</option>
+                        ))}
+                    </select>
+                </div>
                 <button onClick={toggleModal} style={{
                     backgroundColor: '#4CAF50',
                     color: 'white',
@@ -91,14 +100,9 @@ const Client = () => {
                 }}>
                     SEND
                 </button>
-                <label htmlFor="month-select">Select Month: </label>
-                <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
-                    {months.map(month => (
-                        <option key={month} value={month}>{month}</option>
-                    ))}
-                </select>
             </div>
 
+            {/* Modal Section */}
             {isModalOpen && (
                 <div style={{
                     position: 'fixed',
@@ -141,6 +145,7 @@ const Client = () => {
                 </div>
             )}
 
+            {/* Client Table Section */}
             <ClientTable clients={clients} selectedMonth={selectedMonth} onUpdateReading={handleUpdateReading} />
         </div>
     );
