@@ -6,7 +6,7 @@ import PaymentModal from './PaymentModal';
 import './Receipt.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileInvoice, faReceipt, faPaperPlane } from '@fortawesome/free-solid-svg-icons'; 
-import SendModal from './SendModal'; // Import the new SendModal component
+import SendModal from './SendModal';
 
 const Payment = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +15,7 @@ const Payment = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false); 
-  const [isSendModalOpen, setIsSendModalOpen] = useState(false); // State for the Send modal
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,30 +60,35 @@ const Payment = () => {
   };
 
   const handlePaymentSaved = () => {
-    // If you want to handle anything specific after payment is saved
+    // Handle post-payment actions if necessary
   };
 
   const openReceipt = (user) => {
-    setSelectedUser(user); // Set the selected user for receipt
-    setIsReceiptOpen(true); // Open the receipt modal
+    setSelectedUser(user);
+    setIsReceiptOpen(true);
   };
 
   const openSendModal = () => {
-    setIsSendModalOpen(true); // Open the send modal
+    setIsSendModalOpen(true);
   };
 
   const closeSendModal = () => {
-    setIsSendModalOpen(false); // Close the send modal
+    setIsSendModalOpen(false);
   };
 
   const handleSendAction = (selectedMonth) => {
     console.log(`Sending data for month: ${selectedMonth}`);
-    // Add your send logic here
     closeSendModal();
   };
 
   return (
     <div className="receipt-container">
+      <div className="top-bar">
+        <button className="send-button" onClick={openSendModal}>
+          <FontAwesomeIcon icon={faPaperPlane} /> SEND
+        </button>
+      </div>
+
       <h2>Payment Page</h2>
 
       <div className="search-bar">
@@ -94,10 +99,6 @@ const Payment = () => {
           onChange={handleSearchChange}
         />
       </div>
-
-      <button className="send-button" onClick={openSendModal}>
-        <FontAwesomeIcon icon={faPaperPlane} /> SEND
-      </button>
 
       {loading ? (
         <p>Loading users...</p>
@@ -114,7 +115,7 @@ const Payment = () => {
                     aria-label={`View payment for ${user.firstName} ${user.lastName}`}
                   >
                     <FontAwesomeIcon icon={faFileInvoice} />
-                    <span className="tooltip">Payment</span> {/* Tooltip for the button */}
+                    <span className="tooltip">Payment</span>
                   </button>
 
                   <button
@@ -123,7 +124,7 @@ const Payment = () => {
                     aria-label={`View receipt for ${user.firstName} ${user.lastName}`}
                   >
                     <FontAwesomeIcon icon={faReceipt} />
-                    <span className="tooltip">View Receipt</span> {/* Tooltip for the button */}
+                    <span className="tooltip">View Receipt</span>
                   </button>
                 </div>
               </li>
