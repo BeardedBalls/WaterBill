@@ -13,6 +13,7 @@ const Client = () => {
     const [selectedMonth, setSelectedMonth] = useState(months[new Date().getMonth()]); // Default to current month
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
 
     const fetchClients = async (month) => {
         const querySnapshot = await getDocs(collection(firestore, `clients/Clients_${month}/Clients`));
@@ -46,7 +47,7 @@ const Client = () => {
 
     const handleUpdateReading = async (updatedClient) => {
         const monthIndex = months.indexOf(selectedMonth);
-        
+
         // Update the current month's client with the new latest reading
         const updatedClients = clients.map(client => 
             client.id === updatedClient.id ? { ...client, latestReading: updatedClient.latestReading, cubic: updatedClient.cubic } : client
@@ -69,17 +70,76 @@ const Client = () => {
         }
     };
 
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
     return (
         <div>
-            <label htmlFor="month-select">Select Month: </label>
-            <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
-                {months.map(month => (
-                    <option key={month} value={month}>{month}</option>
-                ))}
-            </select>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <button onClick={toggleModal} style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    fontSize: '16px'
+                }}>
+                    SEND
+                </button>
+                <label htmlFor="month-select">Select Month: </label>
+                <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
+                    {months.map(month => (
+                        <option key={month} value={month}>{month}</option>
+                    ))}
+                </select>
+            </div>
+
+            {isModalOpen && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <div style={{
+                        background: 'white',
+                        padding: '20px',
+                        borderRadius: '5px',
+                        width: '400px',
+                        textAlign: 'center'
+                    }}>
+                        <h2>Send Confirmation</h2>
+                        <p>Are you sure you want to send the data?</p>
+                        <button onClick={toggleModal} style={{
+                            marginRight: '10px',
+                            backgroundColor: '#f44336',
+                            color: 'white',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}>Cancel</button>
+                        <button style={{
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}>Confirm</button>
+                    </div>
+                </div>
+            )}
 
             <ClientTable clients={clients} selectedMonth={selectedMonth} onUpdateReading={handleUpdateReading} />
         </div>
