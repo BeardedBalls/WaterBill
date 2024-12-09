@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
-import ClientTable from './ClientTable';
+import ClientTable from './clientTable';
 import SendModal from './SendModal';
 
 const months = [
