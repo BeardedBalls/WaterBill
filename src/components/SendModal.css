@@ -23,6 +23,8 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  height: 200px;
+  width: 300px;
 }
 
 .send-btn {
