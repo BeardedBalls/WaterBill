@@ -23,8 +23,9 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  height: 50px;
-  width: 80px;
+  width: 80vw;
+  height: 5vh;
+
 }
 
 .send-btn {

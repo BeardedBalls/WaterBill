@@ -4,7 +4,6 @@ import { firestore } from './firebaseConfig';
 import ClientTable from './clientTable';
 import SendModal from './SendModal';
 
-
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
