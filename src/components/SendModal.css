@@ -17,7 +17,7 @@
     margin-top: 10px;
   }
   
-  .send-btn, .close-btn {
+  .send-btn1, .close-btn1 {
     margin: 5px;
     padding: 10px;
     border: none;
@@ -28,12 +28,12 @@
 
   }
   
-  .send-btn {
+  .send-btn1 {
     background-color: green;
     color: white;
   }
   
-  .close-btn {
+  .close-btn1 {
     background-color: red;
     color: white;
   }
