@@ -27,8 +27,8 @@ const SendModal = ({ onClose, onSend }) => {
           ))}
         </select>
         <div className="modal-actions">
-          <button className="send-btn" onClick={handleSendClick}>Send</button>
-          <button className="close-btn" onClick={onClose}>Close</button>
+          <button className="send-btn1" onClick={handleSendClick}>Send</button>
+          <button className="close-btn1" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>
