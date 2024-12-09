@@ -2,44 +2,44 @@
     position: fixed;
     top: 20%;
     right: 20%;
+    background: white;
     padding: 20px;
     border-radius: 10px;
     z-index: 1000;
-  }
-  
-  .modal-content {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 300px; /* Optional: Limit modal width */
+}
+
+.modal-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .modal-actions {
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Match buttons to modal content width */
     margin-top: 10px;
-  }
-  
-  .send-btn1, .close-btn1 {
-    margin: 5px;
+}
+
+.send-btn, .close-btn {
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100px;
-    height: 10px;
+    flex: 1; /* Make buttons equal in size */
+    margin: 5px;
+    text-align: center;
+}
 
-  }
-  
-  .send-btn1 {
-    background-color: green;
+.send-btn {
+    background-color: #4CAF50;
     color: white;
-    width: 100px;
-    height: 10px;
-  }
-  
-  .close-btn1 {
-    background-color: red;
-    color: white;
-    width: 100px;
-    height: 10px;
-  }
-  
+}
 
+.close-btn {
+    background-color: #f44336;
+    color: white;
+}
