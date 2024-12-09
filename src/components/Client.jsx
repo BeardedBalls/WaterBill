@@ -50,30 +50,6 @@ const Client = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleSend = async (month) => {
-    try {
-      toggleModal(); // Close modal
-      const querySnapshot = await getDocs(collection(firestore, 'Users'));
-      const emailPromises = querySnapshot.docs.map(async (doc) => {
-        const { email, name } = doc.data();
-
-        if (email) {
-          await sendEmail({
-            to: email,
-            subject: `Bill for ${month}`,
-            message: `Dear ${name}, your bill for ${month} is ready.`,
-          });
-        }
-      });
-
-      await Promise.all(emailPromises);
-      alert('Bills have been sent successfully!');
-    } catch (error) {
-      console.error('Error sending emails:', error);
-      alert('Failed to send bills. Please try again.');
-    }
-  };
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -106,7 +82,10 @@ const Client = () => {
       {isModalOpen && (
         <SendModal
           onClose={toggleModal}
-          onSend={(monthIndex) => handleSend(months[monthIndex - 1])}
+          onSend={(monthIndex) => {
+            console.log(`Send data for month index: ${monthIndex}`);
+            toggleModal();
+          }}
         />
       )}
 
@@ -115,11 +94,5 @@ const Client = () => {
     </div>
   );
 };
-
-/* Mocked sendEmail function; replace with actual email service logic
-const sendEmail = async ({ to, subject, message }) => {
-  console.log(`Sending email to: ${to}, Subject: ${subject}, Message: ${message}`);
-  // Replace this with your email-sending logic, such as Firebase Functions or an email API.
-};*/
 
 export default Client;
