@@ -29,12 +29,12 @@
   }
   
   .send-btn {
-    background-color: #4CAF50;
+    background-color: green;
     color: white;
   }
   
   .close-btn {
-    background-color: #f44336;
+    background-color: red;
     color: white;
   }
   
