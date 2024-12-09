@@ -1,0 +1,86 @@
+/* Modal Container */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+    max-width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    box-sizing: border-box;
+  }
+  
+  /* Modal Content */
+  .modal-content2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .modal-content2 h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+  }
+  
+  /* Input Field */
+  .modal-content2 input {
+    width: 350px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Actions Section */
+  .modal-actions {
+    display: flex;
+    width: 20 px;
+
+  }
+  
+  /* Buttons */
+  .add-btn, .delete-btn, .close-btn {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 10vw;
+    height: 5vh;/* Prevent buttons from wrapping */
+  }
+  
+  .add-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .close-btn {
+    background-color: #aaa;
+    color: white;
+  }
+  
+  /* Add hover effects */
+  .add-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-btn:hover {
+    background-color: #e53935;
+  }
+  
+  .close-btn:hover {
+    background-color: #888;
+  }
+  
