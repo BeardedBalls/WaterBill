@@ -1,98 +1,133 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
-import ClientTable from './clientTable';
-import SendModal from './SendModal';
+import UserReceiptModal from './UserReceiptModal'; 
+import PaymentModal from './PaymentModal'; 
+import './Receipt.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileInvoice } from '@fortawesome/free-solid-svg-icons'; 
+import { faReceipt } from '@fortawesome/free-solid-svg-icons'; // Add the receipt icon
 
-const months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
-
-const Client = () => {
-  const [clients, setClients] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState(months[new Date().getMonth()]); // Default to current month
+const Payment = () => {
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-
-  const fetchClients = async (month) => {
-    const querySnapshot = await getDocs(collection(firestore, `clients/Clients_${month}/Clients`));
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-  };
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false); 
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError('');
-
+    const fetchUsers = async () => {
       try {
-        const currentClients = await fetchClients(selectedMonth);
-        setClients(currentClients);
-      } catch (error) {
-        setError('Error fetching data: ' + error.message);
-      } finally {
+        const querySnapshot = await getDocs(collection(firestore, 'Users'));
+        const userList = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setUsers(userList);
         setLoading(false);
+      } catch (error) {
+        console.error('Error fetching users: ', error);
       }
     };
 
-    fetchData();
-  }, [selectedMonth]);
+    fetchUsers();
+  }, []);
 
-  const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
+  const filteredUsers = users.filter(user => {
+    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+    return fullName.includes(searchTerm.toLowerCase());
+  });
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const handleViewBilling = (user) => {
+    setSelectedUser(user);
+    setIsPaymentModalOpen(true); 
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  const closeReceipt = () => {
+    setIsReceiptOpen(false);
+    setSelectedUser(null); 
+  };
+
+  const closePaymentModal = () => {
+    setIsPaymentModalOpen(false);
+    setSelectedUser(null); 
+  };
+
+  const handlePaymentSaved = () => {
+    // If you want to handle anything specific after payment is saved
+  };
+
+  const openReceipt = (user) => {
+    setSelectedUser(user); // Set the selected user for receipt
+    setIsReceiptOpen(true); // Open the receipt modal
+  };
 
   return (
-    <div>
-      {/* Header Section */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <div>
-          <label htmlFor="month-select">Select Month: </label>
-          <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
-            {months.map(month => (
-              <option key={month} value={month}>{month}</option>
-            ))}
-          </select>
-        </div>
-        <button onClick={toggleModal} style={{
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          padding: '10px 20px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '16px'
-        }}>
-          SEND
-        </button>
+    <div className="receipt-container">
+      <h2>Payment Page</h2>
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search for a user..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
       </div>
 
-      {/* Modal Section */}
-      {isModalOpen && (
-        <SendModal
-          onClose={toggleModal}
-          onSend={(monthIndex) => {
-            console.log(`Send data for month index: ${monthIndex}`);
-            toggleModal();
-          }}
+      {loading ? (
+        <p>Loading users...</p>
+      ) : (
+        <ul className="user-list">
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map(user => (
+              <li key={user.id} className="user-item">
+                <span>{user.firstName} {user.lastName}</span>
+                <div className="tooltip-container">
+                  <button
+                    className="view-billing-btn"
+                    onClick={() => handleViewBilling(user)}
+                    aria-label={`View payment for ${user.firstName} ${user.lastName}`}
+                  >
+                    <FontAwesomeIcon icon={faFileInvoice} />
+                    <span className="tooltip">Payment</span> {/* Tooltip for the button */}
+                  </button>
+
+                  <button
+                    className="view-receipt-btn"
+                    onClick={() => openReceipt(user)}
+                    aria-label={`View receipt for ${user.firstName} ${user.lastName}`}
+                  >
+                    <FontAwesomeIcon icon={faReceipt} />
+                    <span className="tooltip">View Receipt</span> {/* Tooltip for the button */}
+                  </button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <p>No users found.</p>
+          )}
+        </ul>
+      )}
+
+      {isPaymentModalOpen && selectedUser && (
+        <PaymentModal 
+          user={selectedUser} 
+          onClose={closePaymentModal} 
+          onPaymentSaved={handlePaymentSaved} 
         />
       )}
 
-      {/* Client Table Section */}
-      <ClientTable clients={clients} selectedMonth={selectedMonth} />
+      {isReceiptOpen && selectedUser && (
+        <UserReceiptModal user={selectedUser}  onClose={closeReceipt} />
+      )}
     </div>
   );
 };
 
-export default Client;
+export default Payment;
