@@ -7,28 +7,5 @@
   margin-bottom: 10px; /* Add some space below headings */
 }
 
-.user-details p {
-  margin: 5px 0; /* Adjust margin for paragraphs */
-}
 
-.user-details table {
-  width: 100%; /* Make the table take up the full width */
-  border-collapse: collapse; /* Collapse borders for a cleaner look */
-  margin-top: 20px; /* Add some space above the table */
-}
 
-.user-details table th,
-.user-details table td {
-  border: 1px solid #ddd; /* Add border to table cells */
-  padding: 8px; /* Add padding inside cells */
-  text-align: left; /* Align text to the left in table cells */
-}
-
-.user-details table th {
-  background-color: #f2f2f2; /* Light gray background for headers */
-  font-weight: bold; /* Make headers bold */
-}
-
-.user-details button {
-  margin-top: 10px; /* Add some space above the button */
-}
