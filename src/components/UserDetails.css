@@ -1,11 +1,9 @@
-.user-details {
+.user-info {
   text-align: left; /* Align text to the left */
-  padding: 20px; /* Add padding for better spacing */
+  margin: 0; /* Optional: Reset default margins */
+  padding: 0; /* Optional: Reset default padding */
 }
 
-.user-details h2, .user-details h3 {
-  margin-bottom: 10px; /* Add some space below headings */
+.user-info p {
+  margin: 5px 0; /* Add spacing between each line */
 }
-
-
-
