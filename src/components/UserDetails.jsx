@@ -101,11 +101,11 @@ function UserDetails() {
       <h2>User Details</h2>
       {user && (
         <>
+          <p><strong>Meter Number:</strong> {user.meterNumber}</p>
           <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Address:</strong> {user.address}</p>
           <p><strong>Phone Number:</strong> {user.phoneNumber}</p>
-          <p><strong>Meter Number:</strong> {user.meterNumber}</p>
           <button onClick={handleModalOpen}>View Receipt</button> {/* Button to open modal */}
         </>
       )}
