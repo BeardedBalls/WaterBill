@@ -20,3 +20,6 @@
 .user-info {
   text-align: left; /* Ensure left alignment specifically for this section */
 }
+p {
+  text-align: left;
+}
