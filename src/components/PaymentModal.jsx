@@ -8,7 +8,7 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Default to current month
   const [error, setError] = useState('');
-  const [paymentExists, setPaymentExists] = useState(false); // New state to check if payment exists
+  const [loading, setLoading] = useState(false); // Add a loading state
 
   useEffect(() => {
     const fetchTotalAmount = async () => {
@@ -21,7 +21,7 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
         const querySnapshot = await getDocs(clientsQuery);
         let amount = 0;
 
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           amount = doc.data().amount;
         });
 
@@ -32,25 +32,7 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
     };
 
     fetchTotalAmount();
-  }, [user.id, selectedMonth]);
-
-  useEffect(() => {
-    const checkExistingPayment = async () => {
-      try {
-        const paymentsQuery = query(
-          collection(firestore, 'Payments', `Payment_${getMonthName(selectedMonth)}`, 'Payments'),
-          where('meterNumber', '==', user.meterNumber)
-        );
-
-        const querySnapshot = await getDocs(paymentsQuery);
-        setPaymentExists(!querySnapshot.empty); // Set paymentExists based on query results
-      } catch (error) {
-        console.error('Error checking existing payment: ', error);
-      }
-    };
-
-    checkExistingPayment();
-  }, [user.id, selectedMonth]); // Run effect when user or selectedMonth changes
+  }, [user.meterNumber, selectedMonth]);
 
   const handlePaymentChange = (e) => {
     setPaymentAmount(e.target.value);
@@ -66,42 +48,59 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
   };
 
   const handleSavePayment = async () => {
-    if (paymentExists) {
-      setError('Payment has already been made for this month.'); // Show error if payment already exists
-      return;
-    }
+    setError('');
 
     if (paymentAmount <= 0) {
       setError('Please enter a valid payment amount');
       return;
     }
 
+    setLoading(true);
+
     try {
+      const paymentsQuery = query(
+        collection(firestore, 'Payments', `Payment_${getMonthName(selectedMonth)}`, 'Payments'),
+        where('meterNumber', '==', user.meterNumber)
+      );
+
+      const querySnapshot = await getDocs(paymentsQuery);
+
+      if (!querySnapshot.empty) {
+        setError('Payment has already been made for this month.');
+        setLoading(false);
+        return;
+      }
+
       const paymentData = {
         userId: user.id,
         amount: Number(paymentAmount),
         name: `${user.firstName} ${user.lastName}`,
         month: selectedMonth,
+        meterNumber: user.meterNumber, // Include this for validation
       };
 
       console.log('Saving payment data:', paymentData);
 
       // Create a reference to the Payments collection and the specific document for the month
-      const paymentDocRef = collection(firestore, 'Payments', `Payment_${getMonthName(selectedMonth)}`, 'Payments');
+      const paymentDocRef = collection(
+        firestore,
+        'Payments',
+        `Payment_${getMonthName(selectedMonth)}`,
+        'Payments'
+      );
 
       // Add payment to Firestore
       await addDoc(paymentDocRef, paymentData);
+
       console.log('Payment saved successfully');
 
-      // Delay opening the receipt modal for a brief moment
-      setTimeout(() => {
-        onPaymentSaved();
-      }, 500);
-
+      onPaymentSaved();
       onClose();
     } catch (error) {
       console.error('Error saving payment: ', error);
       setError('Failed to save payment. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,10 +126,13 @@ const PaymentModal = ({ user, onClose, onPaymentSaved }) => {
           value={paymentAmount}
           onChange={handlePaymentChange}
           placeholder="Enter payment amount"
+          disabled={loading} // Disable input while loading
         />
         {error && <p className="error">{error}</p>}
-        <button onClick={handleSavePayment}>Save Payment</button>
-        <button onClick={onClose}>Cancel</button>
+        <button onClick={handleSavePayment} disabled={loading}>
+          {loading ? 'Saving...' : 'Save Payment'}
+        </button>
+        <button onClick={onClose} disabled={loading}>Cancel</button>
       </div>
     </div>
   );
