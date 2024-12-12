@@ -41,7 +41,7 @@
   max-height: 70%; /* Enable scrolling for the list */
   overflow-y: auto; /* Vertical scrolling */
   width: 100%;
-  max-width: 80%;
+  max-width: 100%;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
