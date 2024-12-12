@@ -39,9 +39,9 @@
   padding: 0;
   margin: 0;
   max-height: 60%; /* Enable scrolling for the list */
-  overflow-x: auto; /* Vertical scrolling */
-  width: 100%;
-  max-width: 100%;
+  overflow-y: auto; /* Vertical scrolling */
+  width: 90%;
+  max-width: 90%;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
