@@ -7,3 +7,9 @@
 .user-info p {
   margin: 5px 0; /* Add spacing between each line */
 }
+.user-info {
+  text-align: left !important; /* Force left alignment */
+  margin: 0 auto; /* Ensure it's not centered by margin */
+  padding: 10px; /* Add padding for better spacing */
+  display: block; /* Ensure it's treated as a block-level element */
+}
