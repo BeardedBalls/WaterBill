@@ -13,3 +13,10 @@
   padding: 10px; /* Add padding for better spacing */
   display: block; /* Ensure it's treated as a block-level element */
 }
+.user-details {
+  text-align: initial; /* Reset text alignment */
+}
+
+.user-info {
+  text-align: left; /* Ensure left alignment specifically for this section */
+}
