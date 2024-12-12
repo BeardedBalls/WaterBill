@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { auth, firestore } from './firebaseConfig'; // Ensure correct import
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import UserReceiptModal from './UserReceiptModal'; // Import the modal
+import './UserDetails.css'; // Adjust the path if necessary
+
 
 function UserDetails() {
   const [user, setUser] = useState(null);
