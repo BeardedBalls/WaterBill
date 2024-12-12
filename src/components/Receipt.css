@@ -38,10 +38,9 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 40%; /* Enable scrolling for the list */
+  max-height: 40vh; /* Enable scrolling for the list */
   overflow-y: auto; /* Vertical scrolling */
-  width: 95%;
-  max-width: 95%;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
