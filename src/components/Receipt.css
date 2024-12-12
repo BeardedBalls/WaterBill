@@ -38,10 +38,10 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 300px; /* Enable scrolling for the list */
+  max-height: 70%; /* Enable scrolling for the list */
   overflow-y: auto; /* Vertical scrolling */
   width: 100%;
-  max-width: 600px;
+  max-width: 80%;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
