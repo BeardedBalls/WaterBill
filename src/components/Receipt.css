@@ -35,8 +35,15 @@
 
 /* User list */
 .user-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
+  margin: 0;
+  max-height: 300px; /* Enable scrolling for the list */
+  overflow-y: auto; /* Vertical scrolling */
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .user-item {
@@ -50,13 +57,18 @@
   background-color: #f9f9f9;
 }
 
+.user-item:last-child {
+  margin-bottom: 0; /* Remove extra margin for the last item */
+}
+
 .user-item span {
   font-size: 16px;
   font-weight: bold;
   color: #333;
 }
 
-.view-billing-btn, .view-receipt-btn {
+.view-billing-btn,
+.view-receipt-btn {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -66,8 +78,9 @@
   transition: color 0.3s ease;
 }
 
-.view-billing-btn:hover, .view-receipt-btn:hover {
-  color: #007bff; /* Change color on hover */
+.view-billing-btn:hover,
+.view-receipt-btn:hover {
+  color: #007bff;
 }
 
 /* Tooltip styling */
@@ -83,6 +96,7 @@
   bottom: 125%; /* Position the tooltip above the button */
   left: 50%;
   margin-left: -60px; /* Center the tooltip */
+  background-color: #333; /* Background for the tooltip */
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -90,7 +104,7 @@
 .view-billing-btn:hover .tooltip,
 .view-receipt-btn:hover .tooltip {
   visibility: visible;
-  opacity: 1; /* Show tooltip on hover */
+  opacity: 1;
 }
 
 .tooltip-container {
